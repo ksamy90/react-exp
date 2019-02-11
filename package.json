@@ -6,7 +6,8 @@
   "author": "samy",
   "license": "MIT",
   "scripts": {
-    "start": "live-server public",
+    "start": "node server/server.js",
+    "heroku-postbuild": "yarn build",
     "webpack": "webpack",
     "build": "webpack -p --env production",
     "serve": "webpack-dev-server",
@@ -29,6 +30,7 @@
     "css-loader": "0.28.4",
     "enzyme": "3.0.0",
     "enzyme-adapter-react-16": "1.0.0",
+    "express": "4.15.4",
     "moment": "2.18.1",
     "node-sass": "^4.11.0",
     "normalize.css": "7.0.0",
