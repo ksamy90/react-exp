@@ -5,7 +5,20 @@ import expenses from '../fixtures/expenses';
 import selectExpensesTotal from '../../selectors/expenses-total';
 
 test('should render ExpensesSummary correctly', () => {
-    const wrapper = shallow(<ExpensesSummary />);
+    const expense = [];
+    const wrapper = shallow(<ExpensesSummary 
+        expenseCount={expense.length}
+        amount={selectExpensesTotal(expense)}
+    />);
+    expect(wrapper).toMatchSnapshot();
+});
+
+test('should render ExpensesSummary with 1 expense', () => {
+    const expense = [expenses[1]];
+    const wrapper = shallow(<ExpensesSummary
+        expenseCount={expense.length}
+        amount={selectExpensesTotal(expense)}
+    />);
     expect(wrapper).toMatchSnapshot();
 });
 
