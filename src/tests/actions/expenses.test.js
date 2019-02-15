@@ -1,6 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { startAddExpense, startSetExpenses, addExpense, editExpense, removeExpense, setExpenses } from '../../actions/expenses';
+import { startAddExpense, startSetExpenses, addExpense, editExpense, removeExpense, setExpenses, startRemoveExpense } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import database from '../../firebase/firebase';
 
@@ -25,6 +25,24 @@ test('should setup remove expense action object', () => {
         type: 'REMOVE_EXPENSE',
         id: '78ui'
     });
+});
+
+test('should remove expense from firebase', (done) => {
+    const store = createMockStore({});
+    const expense = expenses[1];
+
+    store.dispatch(startRemoveExpense({ id: expense.id }))
+        .then(() => {
+            const actions = store.getActions();
+            expect(actions[0]).toEqual({
+                type: 'REMOVE_EXPENSE',
+                id: expense.id
+            });
+            return database.ref(`expenses/${actions[0].id}`).once('value');
+        }).then((snapshot) => {
+            expect(snapshot.val()).toBeFalsy();
+            done();
+        });
 });
 
 test('should setup edit expense action object', () => {
@@ -60,13 +78,13 @@ test('should add expense to database and store', (done) => {
     store.dispatch(startAddExpense(expenseData))
         .then(() => {
             const actions = store.getActions();
-            expect(actions[0].toEqual(addExpense({
+            expect(actions[0]).toEqual({
                 type: 'ADD_EXPENSE',
                 expense: {
-                    id: expect.any(),
+                    id: expect.any(String),
                     ...expenseData
                 }
-            })));
+            });
             return database.ref(`expenses/${actions[0].expense.id}`).once('value');
         }).then((snapshot) => {
             expect(snapshot.val()).toEqual(expenseData);
@@ -86,13 +104,13 @@ test('should add expense with defaults to database and store', (done) => {
     store.dispatch(startAddExpense({}))
         .then(() => {
             const actions = store.getActions();
-            expect(actions[0].toEqual(addExpense({
+            expect(actions[0]).toEqual({
                 type: 'ADD_EXPENSE',
                 expense: {
-                    id: expect.any(),
+                    id: expect.any(String),
                     ...expense
                 }
-            })));
+            });
             return database.ref(`expenses/${actions[0].expense.id}`).once('value');
         }).then((snapshot) => {
             expect(snapshot.val()).toEqual(expense);
