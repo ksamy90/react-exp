@@ -3,7 +3,6 @@
 exports[`should render EditExpensepage  1`] = `
 <div>
   <ExpenseForm
-    editExpense={[Function]}
     expense={
       Object {
         "amount": 4500,
@@ -13,6 +12,7 @@ exports[`should render EditExpensepage  1`] = `
         "note": "",
       }
     }
+    onSubmit={[Function]}
   />
   <button
     onClick={[Function]}
