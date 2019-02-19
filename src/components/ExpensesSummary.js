@@ -8,9 +8,6 @@ import numeral from 'numeral';
 export const ExpensesSummary = ({ expenseCount, amount }) => {
     const expenseWord = expenseCount === 1 ? 'expense' : 'expenses';
     const expensesTotal = numeral(amount / 100).format('$0,0.00');
-    if (expenseCount === 0) {
-        return <p></p>;
-    };
 
     return (
         <div className="page-header">
